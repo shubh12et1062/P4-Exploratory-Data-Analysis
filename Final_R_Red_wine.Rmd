@@ -26,10 +26,10 @@ library(psych)
 library(plyr)
 ```
 
-```{r echo=FALSE, Load_the_Data}
+```{r , Load_the_Data}
 # Load the Data
 setwd('C:/Users/abc/Downloads/Udacity_R')
-red_wine <-read.csv('wineQualityReds.csv')
+red_wine <-read.csv('wineQualityReds.csv',header= TRUE)
 
 ```
 
@@ -53,15 +53,7 @@ Findings:
 2. X is identification id for each observation.
 3. Quality is the most important variable as it determines quality of individual sample or observation.
 4.Mean Quality is 5.636 and Median is 6 , range is from 3 to 8.
-```{r}
 
-summary(red_wine$quality)
-table(red_wine$quality)
-
-red_wine$quality <- factor(red_wine$quality,ordered = T)
-str(red_wine$quality)
-
-```
 # Univariate Plots Section
 I have plotted the median for all the  variables
 ```{r}
@@ -153,7 +145,7 @@ grid.arrange(qplot(red_wine$fixed.acidity),
 
 
 # Univariate Analysis
-```{r echo=FALSE, Univariate_Plots}
+```{r , Univariate_Plots}
 red_wine$rating <- ifelse(red_wine$quality < 5, 'bad', ifelse(
   red_wine$quality < 7, 'average', 'good'))
 red_wine$rating <- ordered(red_wine$rating,
@@ -219,7 +211,7 @@ summary(log10(red_wine$citric.acid))
 We can see that minimum count ,mean for citric.acid is negative infinity that means a lot of observations are zero.
 
 
-```{r echo=FALSE}
+```{r}
 countScale <- ggplot(data= red_wine,aes(x=citric.acid))+
   geom_histogram() +scale_x_log10()
 logScale <- qplot(x =log10(citric.acid), data = red_wine)
@@ -230,17 +222,12 @@ grid.arrange(countScale, logScale, ncol = 2)
 
 # Bivariate Plots Section
 
-> **Tip**: Based on what you saw in the univariate plots, what relationships
-between variables might be interesting to look at in this section? Don't limit
-yourself to relationships between a main output feature and one of the
-supporting variables. Try to look at relationships between supporting variables
-as well.
-
-
-```{r, echo=FALSE }
+Lets see the correlation behaviour between the features.
+```{r,echo=FALSE, warning=FALSE, message=FALSE ,fig.width=15, fig.height=15}
 col2 <- colorRampPalette(c("red", "white", "blue"))
 M <- cor(red_wine[,seq(1,12)])
 corrplot.mixed(M, lower = "number", upper = "circle", col = col2(10))
+
 ```
 Correlation matrix output shows following behaviour:
 
@@ -437,7 +424,7 @@ ncol = 4)
 ```
 # Multivariate Plots Section
 
-```{r echo = FALSE, warning = FALSE,Alcohol_VS_Citric_Acid_VS_Rating}
+```{r , warning = FALSE,Alcohol_VS_Citric_Acid_VS_Rating}
 ggplot(red_wine, aes(x = alcohol, y = citric.acid , color = rating)) +
   geom_jitter(alpha = 1/2, size = 4) +
   scale_color_brewer(palette = "Blues") +
@@ -448,7 +435,7 @@ ggplot(red_wine, aes(x = alcohol, y = citric.acid , color = rating)) +
 
 From this plot we can say that redwine with good rating is more clustered from 11 to 13/dm^3 alcohol and 0.25 to 0.75gm/dm^3 Citric acid
 
-```{r echo = FALSE, Volatile Acid VS CItric Acid}
+```{r , Volatile Acid VS CItric Acid}
 ggplot(red_wine, aes(x= volatile.acidity, y = citric.acid, color =rating))+
   geom_jitter(alpha = 1/2, size =4 )+
   scale_color_brewer(palette = "Reds") +
@@ -459,7 +446,7 @@ ggplot(red_wine, aes(x= volatile.acidity, y = citric.acid, color =rating))+
 ```
 We find out something interesting that most of the good wines are clustered around 0.2 to 0.6 gm/dm^3 Volatile acid and 0.25 to 0.75 gm/dm^3 Citric Acid
 
-```{r echo = FALSE, Fixed Acid VS Density}
+```{r , Fixed Acid VS Density}
 ggplot(red_wine, aes(x= fixed.acidity, y = density, color =rating))+
   geom_jitter(alpha = 1/2, size =2 )+
   scale_color_brewer(palette = "Greens") +
@@ -469,7 +456,7 @@ ggplot(red_wine, aes(x= fixed.acidity, y = density, color =rating))+
 
 ```
 Good wines seems to be distributed across the plot.
-```{r echo = FALSE, Density_vs_Alcohol_vs_Quality}
+```{r , Density_vs_Alcohol_vs_Quality}
 ggplot(red_wine, aes(x = density, y = alcohol, color = as.factor(quality))) +
   geom_point(alpha = 1/2, size = 2) +
   scale_color_brewer(type='qual') +
@@ -482,7 +469,7 @@ We can see that there is large conectration of average rating wines in range fro
 9 to 10 (%volume) alchol.
 Whereas good rating wines have high concentraion of Alcohol
 
-```{r}
+```{r }
 ggplot(data = red_wine, aes(pH, alcohol, color = as.factor(quality))) +
   geom_point() +
   facet_wrap(~rating) +
@@ -533,16 +520,9 @@ strengths and limitations of your model.
 
 # Final Plots and Summary
 
-> **Tip**: You've done a lot of exploration and have built up an understanding
-of the structure of and relationships between the variables in your dataset.
-Here, you will select three plots from all of your previous exploration to
-present here as a summary of some of your most interesting findings. Make sure
-that you have refined your selected plots for good titling, axis labels (with
-units), and good aesthetic choices (e.g. color, transparency). After each plot,
-make sure you justify why you chose each plot by describing what it shows.
 
 ### Plot One : Effect of alcohol on wine quality
-```{r echo=FALSE, Plot_One}
+```{r , Plot_One}
 ggplot(data = red_wine, aes(as.factor(quality), alcohol, fill = rating)) +
   geom_boxplot() +
   ggtitle('Alcohol Levels on Wine Quality') +
@@ -556,7 +536,7 @@ As alcohol is highly correlated with the quality, it is better to see its patter
 
 
 ### Plot Two : Effect of acids on wine quality
-```{r echo=FALSE, Plot_Two}
+```{r , Plot_Two}
 grid.arrange(ggplot(data = red_wine, aes(as.factor(quality), fixed.acidity, fill = rating)) +
                geom_boxplot() +
                xlab("Quality") +
@@ -579,7 +559,7 @@ grid.arrange(ggplot(data = red_wine, aes(as.factor(quality), fixed.acidity, fill
 As more the acidic better is the wine. It would be better to see which acids have more impact on wine quality. Above plot shows, fixed.acidity and citric.acid have highly correlated with quality but volatile.acidity has negative impact on quality.
 
 ### Plot Three Ideal vs poor wine
-```{r echo=FALSE, Plot_Three}
+```{r , Plot_Three}
 ggplot(data = subset(red_wine, rating != 'good'), aes(alcohol, sulphates, color = rating)) +
   geom_point() +
   ggtitle('Alcohol vs Sulphates on Wine Quality') +
