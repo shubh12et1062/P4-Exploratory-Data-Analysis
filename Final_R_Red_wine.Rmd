@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 Observations of Red Wine Quality by Subham Biswas
 ========================================================
 
@@ -55,7 +60,7 @@ Findings:
 4.Mean Quality is 5.636 and Median is 6 , range is from 3 to 8.
 
 # Univariate Plots Section
-I have plotted the median for all the  variables
+I have plotted the mean for all the  variables
 ```{r}
 ggplot(data = red_wine, aes(x =fixed.acidity))+geom_histogram(binwidth = 1/2, color = 'black',fill = 'blue')+geom_vline(aes(xintercept=mean(fixed.acidity)),
             color="red", linetype=2)
