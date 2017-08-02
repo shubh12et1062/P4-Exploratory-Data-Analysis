@@ -425,6 +425,8 @@ grid.arrange(rating_plot(red_wine$rating, red_wine$fixed.acidity, 'fixed.acidity
 ncol = 4)
 
 ```
+
+
 # Multivariate Plots Section
 
 ```{r , warning = FALSE,Alcohol_VS_Citric_Acid_VS_Rating}
@@ -511,13 +513,15 @@ ggplot(data = red_wine, aes(citric.acid, fixed.acidity, color = as.factor(qualit
 
 
 ### Talk about some of the relationships you observed in this part of the \
-investigation. Were there features that strengthened each other in terms of \
-looking at your feature(s) of interest?
+###investigation. Were there features that strengthened each other in terms of \
+##looking at your feature(s) of interest?
+1.Average rating wine show high concentration of alcohol then comes good rating and then bad rating wine.
+2.Average rating wine show high concentration of citric acid then comes good rating and then bad rating wine.
+3.Average rating wine show high positive mutual relationship of Fixed acid and Citric Acid then comes good rating and then bad rating wine.
 
 ### Were there any interesting or surprising interactions between features?
+Good rating wine have low concentration of Volatile acid and high concentration of Citric acid
 
-### OPTIONAL: Did you create any models with your dataset? Discuss the \
-strengths and limitations of your model.
 
 ------
 
