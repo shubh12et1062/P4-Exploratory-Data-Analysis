@@ -38,9 +38,7 @@ red_wine <-read.csv('wineQualityReds.csv',header= TRUE)
 
 ```
 
-> **Tip**: Before you create any plots, it is a good idea to provide a short
-introduction into the dataset that you are planning to explore. Replace this
-quoted text with that general information!
+
 ```{r}
 # removing the serial number column
 red_wine$X <- NULL
