@@ -770,6 +770,7 @@ ggplot(data = red_wine, aes(as.factor(quality), alcohol, fill = rating)) +
 
 
 ```
+
 ### Description One
 
 As alcohol is highly correlated with the quality, it is better to see its pattern with varying rating. From the above plot, it clearly shows higher % of alcohol yields better wine.
