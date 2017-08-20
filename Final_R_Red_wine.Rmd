@@ -2,12 +2,11 @@
 output:
   html_document: default
   pdf_document: default
+  word_document: default
 ---
 Observations of Red Wine Quality by Subham Biswas
 ========================================================
 
-
-```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
 # Load all of the packages that you end up using in your analysis in this code
@@ -23,6 +22,7 @@ library(corrplot)
 library(psych)
 library(plyr)
 library(party)
+
 ```
 
 ```{r , Load_the_Data}
@@ -44,6 +44,7 @@ str(red_wine)
 colnames(red_wine)
 #describing more
 describe(red_wine)
+
 ```
 Findings:
 1.There are 1599 observations and 13 variables.
@@ -84,6 +85,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = volatile.acidity ) ) +
                geom = "point", 
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
+
 ```
 
 We can see from the plot ,it is almost normal distribution with majority falling between in range 0.2 to 0.8 , mean around 0.5
@@ -100,6 +102,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = citric.acid ) ) +
                geom = "point", 
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
+
 ```
 
 
@@ -115,6 +118,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = residual.sugar ) ) +
                geom = "point", 
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
+
 ```
 
 We can see from the plot ,it is almost normal distribution with majority falling between in range 1 to 3
@@ -131,6 +135,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = chlorides ) ) +
                geom = "point", 
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
+
 ```
 
 
@@ -146,6 +151,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = free.sulfur.dioxide ) ) +
                geom = "point", 
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
+
 ```
 
 ```{r message = FALSE}
@@ -160,6 +166,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = density ) ) +
                geom = "point", 
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
+
 ```
 
 We can see from the plot ,it is almost normal distribution with majority falling between in range 0.995 to 1.0
@@ -177,6 +184,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = pH ) ) +
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
 
+
 ```
 We can see from the plot ,it is almost normal distribution with majority falling between in range 3.0 to 3.7
 ```{r message = FALSE}
@@ -191,6 +199,7 @@ p2 <- ggplot(red_wine, aes( x = 1, y = sulphates ) ) +
                geom = "point", 
                color = "red" )
 grid.arrange(p1 , p2, ncol = 2)
+
 ```
 
 We can see from the plot ,it is almost normal distribution with majority falling between in range 0.4 to 0.9
@@ -233,10 +242,14 @@ grid.arrange(qplot(red_wine$fixed.acidity,xlab ='Fixed Acidity'),
              qplot(red_wine$alcohol, xlab = 'Alcohol'),
              qplot(red_wine$quality, xlab = 'Quality'),
              ncol = 4)
+
 ```
 
 
 # Univariate Analysis
+I first looked at wine quality. Although it has a discrete range of only 3-8, we can roughly see that there is some amount of normal distribution. A large majority of the wines examined received ratings of 5 or 6, and very few received 3, 4, or 8. There's not much more we can do with this histogram, as both decreasing or increasing bin sizes would distort the data.
+
+Given the ratings and distribution of wine quality, I'll instantiate another categorical variable, classifying the wines as 'bad' (rating 0 to 4), 'average' (rating 5 or 6), and 'good' (rating 7 to 10).
 ```{r echo=FALSE, Univariate_Plots}
 red_wine$rating <- ifelse(red_wine$quality < 5, 'bad', ifelse(
   red_wine$quality < 7, 'average', 'good'))
@@ -244,6 +257,8 @@ red_wine$rating <- ordered(red_wine$rating,
                      levels = c('bad', 'average', 'good'))
 summary(red_wine$rating)
 ggplot(data = red_wine,aes(rating))+geom_bar(aes(color = rating,fill = rating))
+
+
 ```
 
 
@@ -276,6 +291,7 @@ grid.arrange(do_boxplot(red_wine$fixed.acidity,'Fixed Acidity'),
              do_boxplot(red_wine$total.sulfur.dioxide,'Total SO2'),
              ncol =4
              )  
+
 ```
 Box plots is very well suited for such plots which have outliers  as it can be seen from above figure, we can also see the median for each of the plots.
 
@@ -291,6 +307,7 @@ p2 <- ggplot(data = red_wine, aes(x =volatile.acidity))+
 
 grid.arrange(p1 ,p2 ,ncol =2)
 
+
 ```
 ###Did you perform any operations on the data to tidy, adjust, or change the form \
 ###of the data? If so, why did you do this?
@@ -300,6 +317,8 @@ citric.acid have lot of zero values, maybe some records are missing or they are 
 summary(red_wine$citric.acid)
 
 summary(log10(red_wine$citric.acid))
+
+
 ```
 
 We can see that minimum count ,mean for citric.acid is negative infinity that means a lot of observations are zero.
@@ -332,6 +351,8 @@ p2 <- p1 + scale_x_log10() + xlab('sulphates, log10')
 grid.arrange(p1, p2, ncol=1)
 
 rm(p1, p2)
+
+
 ```
 
 
@@ -342,6 +363,8 @@ Lets see the correlation behaviour between the features.
 col2 <- colorRampPalette(c("red", "white", "blue"))
 M <- cor(red_wine[,seq(1,12)])
 corrplot.mixed(M, lower = "number", upper = "circle", col = col2(10))
+#Here i used all the variables from fixed.acidity to quality
+
 
 ```
 Correlation matrix output shows following behaviour:
@@ -371,6 +394,7 @@ ggplot(red_wine, aes(x =alcohol))+
   ggtitle("Alcohol VS Quality") +
   xlab("Alcohol") +
   ylab("Quality")
+
 ```
 Only samples with  quality 5 and 6 shows high quantity of alcohol ie average Rating samples.
 But samples with Rating good and bad doesnot show any significant change.
@@ -465,6 +489,8 @@ ggplot(red_wine,aes(x = fixed.acidity, y = pH))+
 
 ```{r}
 cor.test(red_wine$fixed.acidity, red_wine$pH, method ='spearman')
+
+
 ```
 
 Solutions with a pH less than 7 are acidic and solutions with a pH greater than 7 are basic.So that means leeser the pH value higher the acidity .This is the reason we see negative correlation with coefficient of -0.7
@@ -483,6 +509,8 @@ ylab('Total S02')
 ```{r}
 
 cor.test(red_wine$fixed.acidity, red_wine$citric.acid, method ='spearman')
+
+
 ```
 It has a correlation coefficient of 0.6617 which indicates a strong relationship between free and total sulphur dioxides and it is true because both are oxides.
 
@@ -510,6 +538,8 @@ Volatile acid and alcohol vs quality showed similar behaviour , where rating wit
 Ctric acid and Volatile acid are negatively correlated with the coefficient of -0.61025
 ```{r}
 cor.test(red_wine$volatile.acidity, red_wine$citric.acid, method ='spearman')
+
+
 ```
 Because volatile acidity reduces the quality of wine (negative correlation) while citric acid increases wine quality (positive correlation).
 
@@ -580,6 +610,8 @@ ggplot(aes(x = alcohol,
   ggtitle("Alcohol vs Citric Acid") +
   xlab("Alcohol") +
   ylab("Citric Acid")
+
+
 ```
 
 From this plot we can say that redwine with good rating is more clustered from 11 to 13/dm^3 alcohol and 0.25 to 0.75gm/dm^3 Citric acid
@@ -610,6 +642,7 @@ ggplot(aes(x = fixed.acidity,
   ggtitle("Fixed Acid vs Density") +
   xlab("Fixed Acid") +
   ylab("Density")
+
 ```
 Good wines seems to be distributed across the plot.
 ```{r , Density_vs_Alcohol_vs_Quality}
@@ -620,6 +653,7 @@ ggplot(red_wine, aes(x = density, y = alcohol, color = as.factor(quality))) +
   ylab("Alcohol") +
   xlab("Density") +
   labs(color = "Quality")+theme_dark()
+
 ```
 We can see that there is large conectration of average rating wines in range from 0.995 to 1 gm/cm^3 density and 
 9 to 10 (%volume) alchol.
@@ -713,6 +747,8 @@ ggplot(data = red_wine, aes(as.factor(quality), alcohol, fill = rating)) +
   xlab('Quality') +
   ylab('Alcohol (% volume)') +
   scale_fill_brewer(type = 'seq', palette = 1)
+
+
 ```
 ### Description One
 
@@ -737,6 +773,8 @@ grid.arrange(ggplot(data = red_wine, aes(as.factor(quality), fixed.acidity, fill
                ylab("Citric Acid (g / dm^3)") +
               scale_fill_brewer(type = 'seq', palette = 1),
              ncol = 1)
+
+
 ```
 
 ### Description Two
@@ -749,6 +787,8 @@ ggplot(data = subset(red_wine, rating != 'good'), aes(alcohol, sulphates, color 
   ggtitle('Alcohol vs Sulphates on Wine Quality') +
   xlab('Sulphates (g / dm^3)') +
   ylab('Alcohol (% volume)')
+
+
 ```
 
 ### Description Three
