@@ -186,6 +186,7 @@ grid.arrange(p1 , p2, ncol = 2)
 
 
 ```
+
 We can see from the plot ,it is almost normal distribution with majority falling between in range 3.0 to 3.7
 ```{r message = FALSE}
 p1 <- ggplot(data = red_wine, aes(x =sulphates))+
@@ -225,6 +226,7 @@ ggplot(data = red_wine, aes(x =quality))+
 geom_bar( color = 'red', fill = 'red')
 
 ```
+
 We can see from the plot ,the samples are mostly of quality 5 and 6 and least of 3 and 8.That means the bad and good quality wines are very less as compared to average quality wine
 
 ```{r message = FALSE}
@@ -293,6 +295,7 @@ grid.arrange(do_boxplot(red_wine$fixed.acidity,'Fixed Acidity'),
              )  
 
 ```
+
 Box plots is very well suited for such plots which have outliers  as it can be seen from above figure, we can also see the median for each of the plots.
 
 Also the distribution for Volatile acidity apears to be bimodal normal distribution. But when taking log distribution, the plot becomes normal distributed.
@@ -309,6 +312,7 @@ grid.arrange(p1 ,p2 ,ncol =2)
 
 
 ```
+
 ###Did you perform any operations on the data to tidy, adjust, or change the form \
 ###of the data? If so, why did you do this?
 citric.acid have lot of zero values, maybe some records are missing or they are actually zero
@@ -361,12 +365,14 @@ rm(p1, p2)
 Lets see the correlation behaviour between the features.
 ```{r,echo=FALSE, warning=FALSE, message=FALSE ,fig.width=15, fig.height=15}
 col2 <- colorRampPalette(c("red", "white", "blue"))
-M <- cor(red_wine[,seq(1,12)])
+myvars <- c("fixed.acidity","volatile.acidity","citric.acid","residual.sugar","chlorides","free.sulfur.dioxide","total.sulfur.dioxide","density","pH","sulphates","alcohol","quality")
+M <- cor(red_wine[myvars])
 corrplot.mixed(M, lower = "number", upper = "circle", col = col2(10))
-#Here i used all the variables from fixed.acidity to quality
+
 
 
 ```
+
 Correlation matrix output shows following behaviour:
 
 ##Fixed Acidity
@@ -396,6 +402,7 @@ ggplot(red_wine, aes(x =alcohol))+
   ylab("Quality")
 
 ```
+
 Only samples with  quality 5 and 6 shows high quantity of alcohol ie average Rating samples.
 But samples with Rating good and bad doesnot show any significant change.
 
@@ -416,6 +423,7 @@ ggplot(aes(factor(quality),
   ylab('Alcohol')
 
 ```
+
 Higher Quality wine have high mean and median value of Alcohol as compared to Lowest Quality of Red Wine.
 
 
@@ -440,6 +448,7 @@ ggplot(red_wine, aes(x =volatile.acidity))+
   ylab("Quality")
   
 ```
+
 We can say the same for Volatile acidity as well that average Rating wine samples have high volume of volatile acid present in them.
 
 #Fixed Acid VS Citric Acid
@@ -460,7 +469,9 @@ Lets check the correlation coefficient
 cor.test(red_wine$fixed.acidity, red_wine$citric.acid, method ='pearson')
 
 ```
+
 I used pearson method to calculate pearson between fixed acid and citric acid and the coeficient cme to be 0.6717.A good rule of thumb says that coefficient above 0.5 is moderate and coefficient above 0.7 is good.So this shows almost good rleationship between the two.
+
 #Fixed Acid VS Density
 ```{r}
 ggplot(red_wine, aes(x = fixed.acidity, y =density))+
@@ -469,6 +480,7 @@ ggplot(red_wine, aes(x = fixed.acidity, y =density))+
   ylab('Density')
 
 ```
+
 Most data is clustered around 0.995 to 1 g/dm3 density and 7 to 8.5 g/dm3.
 Here i used jitter to add small amount of random variation to the location of each point, and is a useful way of handling overplotting caused by discreteness in smaller datasets.
 Also alpha parameter is used to set transparency of each point.
@@ -512,6 +524,7 @@ cor.test(red_wine$fixed.acidity, red_wine$citric.acid, method ='spearman')
 
 
 ```
+
 It has a correlation coefficient of 0.6617 which indicates a strong relationship between free and total sulphur dioxides and it is true because both are oxides.
 
 #Volatile acidity vs citric acid
@@ -523,6 +536,7 @@ ggplot(red_wine,aes(x = volatile.acidity, y = citric.acid))+
 
 
 ```
+
 My original hypothesis was since both are acids they will be positively correlated but according to scatter plot , these variables are negatively correlated.
 
 
@@ -541,6 +555,7 @@ cor.test(red_wine$volatile.acidity, red_wine$citric.acid, method ='spearman')
 
 
 ```
+
 Because volatile acidity reduces the quality of wine (negative correlation) while citric acid increases wine quality (positive correlation).
 
 ### What was the strongest relationship you found?
@@ -629,6 +644,7 @@ ggplot(aes(x = volatile.acidity,
   ylab("Citric Acid")
  
 ```
+
 We find out something interesting that most of the good wines are clustered around 0.2 to 0.6 gm/dm^3 Volatile acid and 0.25 to 0.75 gm/dm^3 Citric Acid
 
 ```{r , Fixed Acid VS Density}
@@ -644,7 +660,9 @@ ggplot(aes(x = fixed.acidity,
   ylab("Density")
 
 ```
+
 Good wines seems to be distributed across the plot.
+
 ```{r , Density_vs_Alcohol_vs_Quality}
 ggplot(red_wine, aes(x = density, y = alcohol, color = as.factor(quality))) +
   geom_point(alpha = 1/2, size = 2) +
@@ -655,6 +673,7 @@ ggplot(red_wine, aes(x = density, y = alcohol, color = as.factor(quality))) +
   labs(color = "Quality")+theme_dark()
 
 ```
+
 We can see that there is large conectration of average rating wines in range from 0.995 to 1 gm/cm^3 density and 
 9 to 10 (%volume) alchol.
 Whereas good rating wines have high concentraion of Alcohol
@@ -733,6 +752,7 @@ testpred <- predict(wine_ctree, newdata = test)
 table(testpred, test$quality)
 
 ```
+
 No error in predicted values of test data , i think this is the strength of my model.Also by increasing the number of variables i can increase the efficiency of my model.
 
 
